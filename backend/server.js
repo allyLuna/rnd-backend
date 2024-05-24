@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http'); // Import the http module
 const mongoose = require('mongoose');
 const WebSocket = require('ws');
 require('dotenv').config();
@@ -26,8 +27,11 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         console.log('Connected to new MongoDB cluster successfully');
 
-        // Start Express server
-        const server = app.listen(process.env.PORT, () => {
+        // Create an HTTP server instead of relying on app.listen()
+        const server = http.createServer(app); // Use http.createServer() with Express app
+
+        // Start the HTTP server
+        server.listen(process.env.PORT, () => {
             console.log('Express server is running on port', process.env.PORT);
         });
 
